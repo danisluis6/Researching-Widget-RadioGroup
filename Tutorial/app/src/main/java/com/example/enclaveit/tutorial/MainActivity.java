@@ -10,6 +10,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static android.R.attr.id;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView tvSentenceOne;
@@ -36,26 +38,33 @@ public class MainActivity extends AppCompatActivity {
             return;
         };
 
-        if(!onClickButtonResult("When you click to get data from radio button,So you need to check click to see result")){
-            return;
-        };
+        onClickButtonResult("When you click to get data from radio button,So you need to check click to see result");
 
         int id  = rdSentenceOne.getCheckedRadioButtonId();
 
         function2();
     }
 
-    private boolean onClickButtonResult(String s) {
+    private void onClickButtonResult(String s) {
         Toast.makeText(MainActivity.this,String.valueOf(s),Toast.LENGTH_LONG).show();
-        boolean valid = false;
         result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int id = rdSentenceOne.getCheckedRadioButtonId();
-                RadioButton radio = (RadioButton) findViewById(id);
-                Log.d("RESULT","You choosed: "+String.valueOf(radio.getText()));
+                if(getIdFromRadioButton() > 0){
+                    int id = getIdFromRadioButton();
+                    RadioButton radio = (RadioButton) findViewById(id);
+                    Log.d("RESULT","You choosed: "+String.valueOf(radio.getText()));
+                }
             }
         });
+    }
+
+    private int getIdFromRadioButton() {
+        int valid = -1;
+        if (rdSentenceOne.getCheckedRadioButtonId() >= 0){
+            int id = rdSentenceOne.getCheckedRadioButtonId();
+            valid = id;
+        }
         return valid;
     }
 
